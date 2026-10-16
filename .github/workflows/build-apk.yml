@@ -19,8 +19,13 @@ jobs:
           distribution: temurin
           java-version: '17'
 
-      - name: 配置 Android SDK
-        uses: android-actions/setup-android@v3
+      - name: 使用 runner 预装的 Android SDK
+        run: |
+          echo "ANDROID_HOME=$ANDROID_HOME"
+          echo "ANDROID_SDK_ROOT=$ANDROID_SDK_ROOT"
+          ls "$ANDROID_HOME" || ls "$ANDROID_SDK_ROOT"
+          # GitHub ubuntu runner 已预装 SDK，直接接受许可
+          yes | "${ANDROID_HOME:-$ANDROID_SDK_ROOT}/cmdline-tools/latest/bin/sdkmanager" --licenses > /dev/null 2>&1 || true
 
       - name: 配置 Gradle
         uses: gradle/actions/setup-gradle@v4
