@@ -88,6 +88,7 @@
     flex-shrink:0;
     min-height:0;
     transition:width .2s;
+    order:1;
   }
   aside.collapsed{width:0;min-height:0;border-right-color:transparent;overflow:hidden;}
   aside.collapsed .aside-top,
@@ -155,6 +156,7 @@
     min-width:0;
     min-height:0;
     overflow:hidden;
+    order:2;
   }
   .video-wrap{flex:1;position:relative;background:#000;min-height:0;display:flex;align-items:center;justify-content:center;}
   video{max-width:100%;max-height:100%;width:100%;height:100%;object-fit:contain;background:#000;display:block;}
@@ -258,9 +260,9 @@
   /* 移动端 */
   @media(max-width:760px){
     main{flex-direction:column;}
-    aside{width:100%;max-height:36vh;border-right:none;border-bottom:1px solid var(--line);}
+    aside{width:100%;max-height:36vh;border-left:none;border-top:1px solid var(--line);order:2;}
     aside.collapsed{width:100%;max-height:0;}
-    .stage{flex:1;}
+    .stage{flex:1;order:1;}
     header{padding:10px 12px;gap:8px;}
     .logo{font-size:14px;}
   }
@@ -277,10 +279,29 @@
 </header>
 
 <main>
+  <div class="stage">
+    <div class="video-wrap">
+      <video id="video" controls playsinline></video>
+      <div class="nowplaying" id="nowPlaying" style="display:none">
+        <span class="live">LIVE</span>
+        <span id="npName"></span>
+      </div>
+      <div class="overlay" id="overlay">
+        <div class="big">📺</div>
+        <div>导入播放列表后，点击右侧频道即可播放</div>
+      </div>
+    </div>
+    <div class="status-bar">
+      <span id="statusText">就绪</span>
+      <span id="statCount"></span>
+      <span id="statPlaying"></span>
+    </div>
+  </div>
+
   <aside id="chanPanel">
     <div class="aside-top">
       <input type="text" id="search" placeholder="搜索频道…">
-      <button id="togglePanel" title="收起/展开频道列表">收起 ◀</button>
+      <button id="togglePanel" title="收起/展开频道列表">收起 ▶</button>
     </div>
     <div class="group-bar" id="groupBar"></div>
     <div class="chan-list" id="chanList">
@@ -291,25 +312,6 @@
       </div>
     </div>
   </aside>
-
-  <div class="stage">
-    <div class="video-wrap">
-      <video id="video" controls playsinline></video>
-      <div class="nowplaying" id="nowPlaying" style="display:none">
-        <span class="live">LIVE</span>
-        <span id="npName"></span>
-      </div>
-      <div class="overlay" id="overlay">
-        <div class="big">📺</div>
-        <div>导入播放列表后，点击左侧频道即可播放</div>
-      </div>
-    </div>
-    <div class="status-bar">
-      <span id="statusText">就绪</span>
-      <span id="statCount"></span>
-      <span id="statPlaying"></span>
-    </div>
-  </div>
 </main>
 
 <!-- 导入弹窗 -->
@@ -584,7 +586,7 @@
   var togglePanelBtn = document.getElementById('togglePanel');
   togglePanelBtn.onclick = function(){
     var collapsed = chanPanel.classList.toggle('collapsed');
-    togglePanelBtn.textContent = collapsed ? '展开 ▶' : '收起 ◀';
+    togglePanelBtn.textContent = collapsed ? '展开 ◀' : '收起 ▶';
   };
 
   /* ---------------- 导入逻辑 ---------------- */
